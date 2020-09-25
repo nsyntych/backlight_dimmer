@@ -17,7 +17,7 @@ sudo apt-get install libpcre3 libpcre3-dev xprintidle
 Simply type in the terminal of the project's directory:
 ```
 make
-sudo ./timeout pi 30 event0
+sudo ./timeout pi 30 event0 event1
 ```
 Where the `30` is 30 seconds of idleness.
 Where `pi` is the user (you can get your username by typing `whoami` in a terminal).
@@ -43,7 +43,7 @@ Description=Used to dim a computer's backlight upon idleness
 [Service]
 ExecStartPre=/bin/sleep 11
 # sleep time of 11 seconds from boot
-ExecStart=/home/pi/Documents/Github/myForks/backlight_dimmer/timeout pi 30 event0
+ExecStart=/home/pi/Documents/Github/myForks/backlight_dimmer/timeout pi 30 event0 event1
 Environment=DISPLAY=:0
 
 [Install]

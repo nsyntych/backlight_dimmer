@@ -341,9 +341,9 @@ static void increase_brightness(bool increase, bool ignoreIdle){
 int main(int argc, char * argv[]) {
 		signal(SIGINT, sig_handler);
 		if (argc < 4) {
-				SPAM(("Usage: timeout <user> <timeout_sec> <event>\n"));
-				SPAM(("    Use lsinput to see input devices.\n"));
-				SPAM(("    Device to use is shown as /dev/input/<device>\n"));
+				printf("Usage: timeout <user> <timeout_sec> <events> ...\n");
+				printf("    Use lsinput to see input devices.\n");
+				printf("    Device to use is shown as /dev/input/<device>\n");
 				exit(1);
 		}
 		user_name = (char *)malloc(strlen(argv[1]));
@@ -359,13 +359,13 @@ int main(int argc, char * argv[]) {
 				}
 		}
 		timeout = atoi(argv[2]);
-		uint16_t num_dev = argc - 2;
+		uint16_t num_dev = argc - 3;
 		uint16_t eventfd[num_dev];
 		char device[num_dev][32];
 		for (uint16_t i = 0; i < num_dev; i++) {
 				device[i][0] = '\0';
 				strcat(device[i], "/dev/input/");
-				strcat(device[i], argv[3]);
+				strcat(device[i], argv[3+i]);
 
 				int event_dev = open(device[i], O_RDONLY | O_NONBLOCK);
 				if(event_dev == -1) {
@@ -404,7 +404,7 @@ int main(int argc, char * argv[]) {
 		restart_xprintidle();
 		sleep_ms(XPRINT_IDLE_TIMEOUT);
 		increase_brightness(true, false);
-		disable_xenergystar();
+		//disable_xenergystar();
 		#else
 		increase_brightness(false, true);
 		increase_brightness(true, true);
