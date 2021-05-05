@@ -27,7 +27,7 @@
   #define SPAM(a) (void)0
 #endif
 
-#ifdef __arm__
+#ifdef __aarch64__
 #define SLEEP_TIMEOUT_DURATION 1000 //in ms
 #else
 #define SLEEP_TIMEOUT_DURATION 250 //in ms
@@ -44,7 +44,7 @@ static uint16_t fade_amount = 0;
 static uint16_t prev_brightness = 0;
 static unsigned long long int current_time;
 
-#ifdef __arm__  //raspberry pi
+#ifdef __aarch64__  //raspberry pi
 static const char actual_file[53] = "/sys/class/backlight/rpi_backlight/actual_brightness";
 static const char max_file[50] = "/sys/class/backlight/rpi_backlight/max_brightness";
 static const char bright_file[46] = "/sys/class/backlight/rpi_backlight/brightness";
@@ -190,7 +190,7 @@ static uint32_t get_idle_time() {
 }
 
 static uint32_t get_touch_screen_id(){
-		#ifdef __arm__
+		#ifdef __aarch64__
 		int id;
 
 		pcre *reCompiled;
@@ -265,7 +265,7 @@ static uint32_t get_touch_screen_id(){
 }
 
 static void enable_touch_screen(bool enable) {
-		#ifdef __arm__
+		#ifdef __aarch64__
 		FILE *fp;
 		char final_command[70];
 		char set_command[] = "%s %s %s %s %d";
@@ -311,7 +311,7 @@ static void increase_brightness(bool increase, bool ignoreIdle){
 		}
 		else{
 				for (uint16_t i = max_brightness; i > 0 + fade_amount; i--) {
-		  #ifndef __arm__
+		  #ifndef __aarch64__
 						if(!ignoreIdle && (get_idle_time() < timeout*1E4)) {
 								SPAM(("Aborting screen dim, user moved!\n"));
 								ignore_timeout = true;
@@ -327,7 +327,7 @@ static void increase_brightness(bool increase, bool ignoreIdle){
 										break;
 								}
 						}
-			#ifdef __arm__
+			#ifdef __aarch64__
 						sleep_ms(3);
 			#else
 						sleep_ms(1);
@@ -390,13 +390,13 @@ int main(int argc, char * argv[]) {
 		max_brightness = readint(max_file);
 		current_brightness = max_brightness;
 		actual_brightness = readint(actual_file);
-	#ifdef __arm__
+	#ifdef __aarch64__
 		fade_amount = 1;
 	#else
 		fade_amount = 10;
 	#endif
 
-	#ifdef __arm__
+	#ifdef __aarch64__
 		enable_touch_screen(true);
 		increase_brightness(false, true);
 		increase_brightness(true, true);
