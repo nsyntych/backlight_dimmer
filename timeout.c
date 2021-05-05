@@ -131,7 +131,7 @@ static void restart_xprintidle() {
 		FILE *fp;
 
 		/* Open the command for reading. */
-		fp = popen("sudo systemctl restart display-manager", "r");
+		fp = popen("sudo systemctl restart dietpi-autostart_custom", "r");
 		if (fp == NULL) {
 				SPAM(("Failed to run command\n" ));
 				exit(1);
